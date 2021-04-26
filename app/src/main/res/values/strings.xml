@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Book List</string>
+    <string name="title_activity_book_list">BookList</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="no_internet">No Internet connection.</string>
+    <string name="empty_text">No books found</string>
+</resources>
