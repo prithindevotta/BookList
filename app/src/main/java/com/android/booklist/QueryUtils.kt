@@ -49,7 +49,18 @@ class QueryUtils {
                         }
                     }
                 }
-                books.add(Books(volume.getString("title"), authors.toString(), volume.getString("publishedDate")))
+                var book = Books(volume.getString("title"), authors.toString())
+                if(volume.has("imageLinks")){
+                    val imageLinks = volume.getJSONObject("imageLinks")
+                    book.setThumbnail(imageLinks.getString("smallThumbnail"))
+                }
+                if(volume.has("description")){
+                    book.setDescription(volume.getString("description"))
+                }
+                if(volume.has("publishedDate")){
+                    book.setYear(volume.getString("publishedDate"))
+                }
+                books.add(book)
             }
             return books
         }

@@ -11,6 +11,8 @@ import android.widget.*
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.AsyncTaskLoader
 import androidx.loader.content.Loader
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Books?>> {
     private lateinit var mQuery: String
@@ -23,14 +25,12 @@ class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Bo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_list)
-
-        val listView = findViewById<ListView>(R.id.recyclerView)
+        val listView = findViewById<RecyclerView>(R.id.recyclerView)
+        listView.layoutManager = LinearLayoutManager(this)
         val bundle = intent.extras
         mQuery = bundle!!.get("query").toString()
         mEmptyTextView = findViewById(R.id.empty_textView)
-        listView.emptyView = mEmptyTextView
         mAdapter = CustomizedAdapter(this, ArrayList())
-        listView.adapter = mAdapter
 
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
@@ -43,13 +43,7 @@ class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Bo
             progressBar.visibility = View.GONE
             mEmptyTextView.text = getString(R.string.no_internet)
         }
-
-        listView.setOnItemClickListener(){ _: AdapterView<*>, _:View, position: Int, _: Long ->
-            val book = mAdapter.getItem(position)
-
-
-        }
-
+        listView.adapter = mAdapter
     }
 
 
@@ -73,16 +67,14 @@ class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Bo
         return SearchBook(this, BOOK_API, mQuery)
     }
 
-    override fun onLoadFinished(loader: Loader<ArrayList<Books?>>, data: ArrayList<Books?>?) {
+    override fun onLoadFinished(loader: Loader<ArrayList<Books?>>, data: ArrayList<Books?>?){
         var progressBar = findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.visibility = View.GONE
-        mEmptyTextView.setText(R.string.empty_text)
-        mAdapter.clear()
-        mAdapter.addAll(data!!)
+        mAdapter.update(data!!)
     }
 
     override fun onLoaderReset(loader: Loader<ArrayList<Books?>>) {
-        mAdapter.clear()
+
     }
 
 

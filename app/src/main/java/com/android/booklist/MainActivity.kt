@@ -1,17 +1,15 @@
 package com.android.booklist
 
+import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.ProgressBar
-import androidx.loader.app.LoaderManager
-import androidx.loader.content.AsyncTaskLoader
-import androidx.loader.content.Loader
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+
 
 class MainActivity : AppCompatActivity(){
     private lateinit var mQuery: String
@@ -19,17 +17,34 @@ class MainActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val search = findViewById<Button>(R.id.search)
-
+        val search = findViewById<ImageView>(R.id.search)
+        val queryText = findViewById<EditText>(R.id.query)
         search.setOnClickListener {
-            val queryText = findViewById<EditText>(R.id.query)
-            mQuery = queryText.text.toString()
-            val intent = Intent(this, BookList::class.java)
-            intent.putExtra("query", mQuery)
-            intent.action = Intent.ACTION_SEND
-            startActivity(intent)
+            queryText.isFocusable = true
+            queryText.requestFocus()
+            val imm = this.getSystemService(Service.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(queryText, 0)
+        }
+        queryText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                performSearch()
+            }
+            false
         }
 
 
+    }
+
+    private fun performSearch() {
+        val queryText = findViewById<EditText>(R.id.query)
+        queryText.clearFocus()
+        val `in`: InputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        `in`.hideSoftInputFromWindow(queryText.windowToken, 0)
+        mQuery = queryText.text.toString()
+        val intent = Intent(this, BookList::class.java)
+        intent.putExtra("query", mQuery)
+        intent.action = Intent.ACTION_SEND
+        startActivity(intent)
     }
 }

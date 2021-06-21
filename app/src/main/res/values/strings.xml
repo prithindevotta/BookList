@@ -9,6 +9,10 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="no_internet">No Internet connection.</string>
+    <string name="no_internet">Internet .</string>
     <string name="empty_text">No books found</string>
+    <string name="search">Search</string>
+    <string name="bookdrobe">BookDrobe</string>
+    <string name="first_para">This app is designed for helping book lovers to find the books of their favorite genre or Author.</string>
+    <string name="second_para">Search for your favorite keyword or author and go through the description to find your favorite read.</string>
 </resources>
