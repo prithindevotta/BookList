@@ -15,7 +15,7 @@
     <string name="bookdrobe">BookDrobe</string>
     <string name="first_para">This app is designed for helping book lovers to find the books of their favorite genre or Author.</string>
     <string name="second_para">Search for your favorite keyword or author and go through the description to find your favorite read.</string>
-    <string name="published_on">Published on: </string>
+    <string name="published_on">Published in: </string>
     <string name="description">Description:</string>
     <string name="page_count">Page Count:</string>
     <string name="genre">Genre:</string>
