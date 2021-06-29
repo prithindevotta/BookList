@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity(){
         queryText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch()
+
             }
             false
         }
@@ -42,6 +43,8 @@ class MainActivity : AppCompatActivity(){
             getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         `in`.hideSoftInputFromWindow(queryText.windowToken, 0)
         mQuery = queryText.text.toString()
+        queryText.text.clear()
+
         val intent = Intent(this, BookList::class.java)
         intent.putExtra("query", mQuery)
         intent.action = Intent.ACTION_SEND

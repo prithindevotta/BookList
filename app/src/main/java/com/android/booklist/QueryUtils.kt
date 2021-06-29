@@ -32,12 +32,17 @@ class QueryUtils {
 
         private fun extractBooks(jsonResponse: String?): ArrayList<Books?> {
             var books: ArrayList<Books?> = ArrayList()
+//            Log.e("response", jsonResponse!!)
             var jsonObject = JSONObject(jsonResponse!!)
+            if (jsonObject.getString("totalItems")== "0"){
+                return books
+            }
             val jsonArray = jsonObject.getJSONArray("items")
             for (i in 0 until jsonArray.length()){
                 val item = jsonArray.getJSONObject(i)
                 val volume = item.getJSONObject("volumeInfo")
                 val authors = StringBuilder()
+                val genre = StringBuilder()
                 if(volume.has("authors")){
                     val authorsArray = volume.getJSONArray("authors")
                     for (i in 0 until authorsArray.length()){
@@ -49,7 +54,28 @@ class QueryUtils {
                         }
                     }
                 }
-                var book = Books(volume.getString("title"), authors.toString())
+                if(volume.has("categories")){
+                    val genreArray = volume.getJSONArray("categories")
+                    for (i in 0 until genreArray.length()){
+                        if (i==0){
+                            genre.append(genreArray.get(i).toString())
+                        }
+                        else{
+                            genre.append(", "+genreArray.get(i).toString())
+                        }
+                    }
+                }
+                val book = Books(authors.toString())
+                book.setGenre(genre.toString())
+                if( volume.has("title")){
+                    book.setTitle(volume.getString("title"))
+                }
+                if( volume.has("subtitle")){
+                    book.setSubtitle(volume.getString("subtitle"))
+                }
+                if( volume.has("pageCount")){
+                    book.setPageCount(volume.getString("pageCount"))
+                }
                 if(volume.has("imageLinks")){
                     val imageLinks = volume.getJSONObject("imageLinks")
                     book.setThumbnail(imageLinks.getString("smallThumbnail"))

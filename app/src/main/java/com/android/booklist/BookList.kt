@@ -13,8 +13,9 @@ import androidx.loader.content.AsyncTaskLoader
 import androidx.loader.content.Loader
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.io.Serializable
 
-class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Books?>> {
+class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Books?>>, onClick {
     private lateinit var mQuery: String
     private lateinit var  mAdapter: CustomizedAdapter
     private lateinit var mEmptyTextView: TextView
@@ -57,7 +58,7 @@ class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Bo
             val QUERY_PARA: String = "q"
             val TYPE: String = "printType"
             val MAX_RESULTS: String = "maxResults"
-            val url = Uri.parse(mUrl).buildUpon().appendQueryParameter(QUERY_PARA, mQuery).appendQueryParameter(TYPE, "books").appendQueryParameter(MAX_RESULTS, "10").build()
+            val url = Uri.parse(mUrl).buildUpon().appendQueryParameter(QUERY_PARA, mQuery).appendQueryParameter(TYPE, "books").appendQueryParameter(MAX_RESULTS, "20").build()
             return QueryUtils.fetchBooks(url)
         }
 
@@ -67,15 +68,30 @@ class BookList : AppCompatActivity(), LoaderManager.LoaderCallbacks<ArrayList<Bo
         return SearchBook(this, BOOK_API, mQuery)
     }
 
-    override fun onLoadFinished(loader: Loader<ArrayList<Books?>>, data: ArrayList<Books?>?){
+    override fun onLoadFinished(loader: Loader<ArrayList<Books?>>, data: ArrayList<Books?>){
         var progressBar = findViewById<ProgressBar>(R.id.progress_bar)
         progressBar.visibility = View.GONE
-        mAdapter.update(data!!)
+        if (data.isNotEmpty()){
+            mAdapter.update(data)
+        }
+        else{
+            mEmptyTextView.text = getString(R.string.No_books)
+        }
+
     }
 
     override fun onLoaderReset(loader: Loader<ArrayList<Books?>>) {
 
     }
 
+    override fun onItemClick(item: Books?) {
+        val intent = Intent(this, Description::class.java)
+        intent.putExtra("clicked", item)
+        startActivity(intent)
+    }
 
+}
+
+interface onClick{
+    fun onItemClick(item: Books?)
 }

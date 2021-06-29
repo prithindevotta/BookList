@@ -1,9 +1,16 @@
 package com.android.booklist
 
-class Books(private var mTitle: String = "No title", private var mAuthors: String = "No Author"){
+import java.io.Serializable
+
+class Books(private var mAuthors: String): Serializable{
+    private var mTitle: String = ""
     private var mThumbnail: String = ""
     private var mDescription: String = ""
+    private var mPgCount: String = ""
+    private var mSubtitle: String = ""
+    private var mGenre: String = ""
     private var mYear: String = ""
+
     init {
         if (mTitle.isEmpty()){
             mTitle = "No title"
@@ -17,32 +24,59 @@ class Books(private var mTitle: String = "No title", private var mAuthors: Strin
         if (mDescription.isEmpty()){
             mDescription = "No description"
         }
+        if (mPgCount.isEmpty()){
+            mPgCount = "No count available"
+        }
+        if (mGenre.isEmpty()){
+            mGenre = "Not available"
+        }
     }
-
-    public fun setThumbnail(tn: String){
+    fun setTitle(title: String){
+        mTitle = title
+    }
+    fun setThumbnail(tn: String){
         mThumbnail = tn
     }
 
-    public fun setDescription(des: String){
+    fun setDescription(des: String){
         mDescription = des
     }
-    public fun setYear(year: String){
+    fun setYear(year: String){
         mYear = year
         mYear = mYear.substring(0, 4)
     }
-    public fun getTitle(): String{
+    fun setSubtitle(sub: String){
+        mSubtitle = sub
+        mSubtitle = "\"$mSubtitle\""
+    }
+    fun getSubtitle(): String{
+        return mSubtitle
+    }
+    fun setPageCount(pg: String){
+        mPgCount = pg
+    }
+    fun getPgCount(): String{
+        return mPgCount
+    }
+    fun setGenre(genre: String){
+        mGenre = genre
+    }
+    fun getGenre(): String{
+        return mGenre
+    }
+    fun getTitle(): String{
         return mTitle
     }
-    public fun getAuthors(): String{
+    fun getAuthors(): String{
         return mAuthors
     }
-    public fun getYear(): String{
+    fun getYear(): String{
         return mYear
     }
-    public fun getDescription(): String{
+    fun getDescription(): String{
         return mDescription
     }
-    public fun getThumbnail(): String{
+    fun getThumbnail(): String{
         return mThumbnail
     }
 }

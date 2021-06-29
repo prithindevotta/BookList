@@ -20,10 +20,13 @@ import java.io.InputStream
 import java.net.URL
 
 
-class CustomizedAdapter(context: Context, var  books: ArrayList<Books?>): RecyclerView.Adapter<ImageHolder>() {
+class CustomizedAdapter(private val listener: onClick, var  books: ArrayList<Books?>): RecyclerView.Adapter<ImageHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val targetView = LayoutInflater.from(parent.context).inflate(R.layout.list_view, parent, false)
         var viewHolder =  ImageHolder(targetView)
+        targetView.setOnClickListener(){
+            listener.onItemClick(books[viewHolder.adapterPosition])
+        }
         return viewHolder
     }
 
